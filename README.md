@@ -1,5 +1,3 @@
-# Projet-de-recherche-Deep-learning-for-reliable-study-of-erosion-of-Normandy-cliffs
-
 # Deep learning for reliable study of erosion of Normandy cliffs
 
 Automated extraction of cliff-top edges from very-high-resolution Pléiades satellite imagery
@@ -17,7 +15,6 @@ using semantic segmentation models (U-Net, DeepLabV3+), applied to the Dieppe co
 ├── Images/                        # 256×256 px image tiles (Pléiades, 8-bit RGB)
 ├── Masks/                         # Corresponding binary mask tiles (cliff edge = 1)
 ├── Code_UNet_V12_commenté.ipynb   # U-Net pipeline — fully commented
-├── DeepLabV3Plus_V4.ipynb         # DeepLabV3+ V4 (known issues, see below)
 └── DeepLabV3Plus_V5.ipynb         # DeepLabV3+ V5 — corrected (training in progress)
 
 ```
@@ -42,16 +39,12 @@ using semantic segmentation models (U-Net, DeepLabV3+), applied to the Dieppe co
 - **Optimiser**: Adam, lr=1e-4, CosineAnnealingLR (1e-4 → 1e-6 over 50 epochs)
 - **Augmentation**: HorizontalFlip, ColorJitter (via albumentations)
 
-### DeepLabV3+ V4
-- ResNet-50 backbone pretrained on ImageNet
-- Loss: Focal + Tversky — ⚠ **known issues** (automatic `pos_weight ≈ 147` caused near-zero inference probabilities → black output mask). See V5.
 
-### DeepLabV3+ V5 *(training in progress)*
-Corrections over V4:
-1. `pos_weight` fixed to 10.0 (removing double-penalisation from Focal Loss)
-2. `_apply_dilation()` replaced by `_freeze_stride_to_one()` — annuls all residual strides in layer3/layer4
-3. `ReduceLROnPlateau` → `CosineAnnealingLR` (avoids premature lr reduction)
-4. Inference cell includes automatic probability map diagnostics
+### DeepLabV3+ V5 
+- `pos_weight` fixed to 10.0 (removing double-penalisation from Focal Loss)
+- `_apply_dilation()` replaced by `_freeze_stride_to_one()` — annuls all residual strides in layer3/layer4
+- `ReduceLROnPlateau` → `CosineAnnealingLR` (avoids premature lr reduction)
+- Inference cell includes automatic probability map diagnostics
 
 ---
 
@@ -67,10 +60,13 @@ Corrections over V4:
 
 **Inference settings**: sliding window stride = 128 (50% overlap), binarisation threshold = 0.5, connected-component filter `min_size = 5000`. Output: georeferenced GeoTIFF (Lambert 93, EPSG:2154).
 
-![Probability map](decoupe80_probmap_deeplabv3plus_v4_stride128_png.png)
-![Binary mask](decoupe80_deeplabv3plus_v4_stride128_png.png)
+## Results - DeepLabV3+ V5
 
-> DeepLabV3+ results will be added once V5 training completes.
+| Dataset | IoU côte | mIoU  | Prec  | Rec   | F1    | Acc|
+|---|---|---|---|---|---|---|
+|TRAIN        | 0.439 | 0.716 | 0.445 | 0.971 | 0.610 | 0.992|
+|VALIDATION   | 0.458 | 0.725 | 0.462 | 0.981 | 0.628 | 0.992|
+|TEST         | **0.465** | **0.728** | **0.468** | **0.987** | **0.635** | **0.992**|
 
 ---
 
