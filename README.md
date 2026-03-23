@@ -1,6 +1,8 @@
 # Projet-de-recherche-Deep-learning-for-reliable-study-of-erosion-of-Normandy-cliffs
-
-
+##Description :
+> Decoupe_tif.ipynb : python notebook pour la découpe de l'image d'entrée et de son masque (se trouvant dans dataset/TIF_files.7z) correspondant en tuiles de taille 256x256 pixels avec un stride de 64   pixels. Les tuiles seront stockées respectivement dans "dataset/Images" et "dataset/Masks".
+> Code_UNet_V12_commenté_gh.ipynb : python notebook du modèle UNet utilisé pour obtenir les résultats finaux exposés dans le rapport.
+> 
 
 
 
