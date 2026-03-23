@@ -53,7 +53,7 @@ using semantic segmentation models (U-Net, DeepLabV3+), applied to the Dieppe co
 | Metric | Train | Validation | Test |
 |---|---|---|---|
 | IoU (cliff) | 0.869 | 0.867 | **0.875** |
-| Mean IoU | 0.934 | 0.933 | 0.937 |
+| Mean IoU | 0.934 | 0.933 | **0.937** |
 | Precision | 0.915 | 0.910 | **0.918** |
 | Recall | 0.946 | 0.948 | **0.950** |
 | F1 | 0.930 | 0.929 | **0.933** |
